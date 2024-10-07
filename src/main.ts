@@ -27,8 +27,9 @@ const settingsMessageSchema = z.object({
 const messageSchema = z.union([dataMessageSchema, settingsMessageSchema]);
 
 type Data = z.infer<typeof dataMessageSchema>["data"];
+type Theme = z.infer<typeof settingsMessageSchema>["settings"]["theme"];
 
-const displayData = ({ input, output }: Data) => {
+const displayData = ({ input, output }: Data, theme: Theme) => {
   const contentDiv = document.getElementById("content");
   if (!contentDiv) {
     return;
@@ -44,22 +45,24 @@ const displayData = ({ input, output }: Data) => {
   input.messageHistory.forEach((message) => {
     const messageDiv = document.createElement("div");
     // add styles based on role
-    messageDiv.classList.add(message.role.toLowerCase(), "message");
+    messageDiv.classList.add(message.role.toLowerCase(), "message", theme);
     messageDiv.textContent = message.content;
     contentDiv.appendChild(messageDiv);
   });
 
   const outputDiv = document.createElement("div");
-  outputDiv.classList.add("output", "message", "assistant");
+  outputDiv.classList.add("output", "message", "assistant", theme);
   outputDiv.textContent = output;
   contentDiv.appendChild(outputDiv);
 };
 
 const handleMessage = (event: { data: unknown }) => {
+  console.log("handleMessage ~ event:", event);
+
   try {
     const message = messageSchema.parse(event.data);
     if (message.type === "data") {
-      displayData(message.data);
+      displayData(message.data, "dark");
     }
   } catch (error) {
     console.error("Invalid message received:", error);
@@ -81,5 +84,5 @@ if (import.meta.env.DEV) {
   };
 
   // Display the mock data
-  displayData(mockData);
+  displayData(mockData, "light");
 }
