@@ -1,4 +1,5 @@
 import { z } from "zod";
+import "./style.css";
 
 const dataMessageSchema = z.object({
   type: z.literal("data"),
@@ -42,25 +43,16 @@ const displayData = ({ input, output }: Data) => {
 
   input.messageHistory.forEach((message) => {
     const messageDiv = document.createElement("div");
-    messageDiv.textContent = `${message.role}: ${message.content}`;
+    // add styles based on role
+    messageDiv.classList.add(message.role.toLowerCase(), "message");
+    messageDiv.textContent = message.content;
     contentDiv.appendChild(messageDiv);
-
-    const hr = document.createElement("hr");
-
-    contentDiv.appendChild(hr);
   });
 
   const outputDiv = document.createElement("div");
-
-  outputDiv.textContent = `Output: ${output}`;
+  outputDiv.classList.add("output", "message", "assistant");
+  outputDiv.textContent = output;
   contentDiv.appendChild(outputDiv);
-
-  const hr = document.createElement("hr");
-  contentDiv.appendChild(hr);
-
-  const pre = document.createElement("pre");
-  pre.textContent = JSON.stringify(input, null, 2);
-  contentDiv.appendChild(pre);
 };
 
 const handleMessage = (event: { data: unknown }) => {
@@ -76,13 +68,13 @@ const handleMessage = (event: { data: unknown }) => {
 
 window.addEventListener("message", handleMessage);
 
-if (process?.env?.NODE_ENV === "development") {
+if (import.meta.env.DEV) {
   // Mock the data that would be sent by the parent window
   const mockData: Data = {
     input: {
       messageHistory: [
-        { role: "User", content: "Hello" },
-        { role: "Bot", content: "Hi there!" },
+        { role: "assistant", content: "Hi there!" },
+        { role: "user", content: "Hello" },
       ],
     },
     output: "Hi there!",
