@@ -32,9 +32,7 @@ type Theme = z.infer<typeof settingsMessageSchema>["settings"]["theme"];
 let globalTheme: Theme = "light";
 
 const displayData = ({ input, output }: Data, theme: Theme) => {
-  if (theme === "dark") {
-    document.body.classList.add("dark");
-  }
+  document.body.classList.add(theme);
 
   const contentDiv = document.getElementById("content");
   if (!contentDiv) {
