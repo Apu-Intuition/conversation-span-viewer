@@ -29,7 +29,13 @@ const messageSchema = z.union([dataMessageSchema, settingsMessageSchema]);
 type Data = z.infer<typeof dataMessageSchema>["data"];
 type Theme = z.infer<typeof settingsMessageSchema>["settings"]["theme"];
 
+let globalTheme: Theme = "light";
+
 const displayData = ({ input, output }: Data, theme: Theme) => {
+  if (theme === "dark") {
+    document.body.classList.add("dark");
+  }
+
   const contentDiv = document.getElementById("content");
   if (!contentDiv) {
     return;
@@ -62,7 +68,11 @@ const handleMessage = (event: { data: unknown }) => {
   try {
     const message = messageSchema.parse(event.data);
     if (message.type === "data") {
-      displayData(message.data, "dark");
+      displayData(message.data, globalTheme);
+    }
+
+    if (message.type === "settings") {
+      globalTheme = message.settings.theme;
     }
   } catch (error) {
     console.error("Invalid message received:", error);
@@ -84,5 +94,5 @@ if (import.meta.env.DEV) {
   };
 
   // Display the mock data
-  displayData(mockData, "light");
+  displayData(mockData, globalTheme);
 }

@@ -4,6 +4,11 @@ body {
   color: rgb(10, 10, 10);
 }
 
+body.dark {
+  background-color: #09090b;
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .content {
   display: flex;
   flex-direction: column;
@@ -27,7 +32,7 @@ body {
   align-self: flex-end;
 }
 
-.user .dark {
+.user.dark {
   background-color: #0a0f1d;
   color: rgba(255, 255, 255, 0.8);
 }
@@ -38,7 +43,7 @@ body {
   margin-right: 50px;
 }
 
-.assistant .dark {
+.assistant.dark {
   background-color: #1a032b;
   color: rgba(255, 255, 255, 0.8);
 }
