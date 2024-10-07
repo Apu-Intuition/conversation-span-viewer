@@ -9,24 +9,28 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  gap: 1rem;
 }
 
 .message {
-  padding: 10px;
-  margin: 10px;
-  border-radius: 10px;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  line-height: 1.2;
+  font-size: 0.8rem;
 }
 
 .user {
   background-color: #f1f5f9;
   color: #475569;
   text-align: right;
-  margin-left: auto;
+  margin-left: 50px;
+  align-self: flex-end;
 }
 
 .assistant {
   background-color: #ede9fe;
   color: #8b5cf6;
+  margin-right: 50px;
 }
 
 .output {
